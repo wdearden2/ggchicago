@@ -1,0 +1,68 @@
+
+body {
+    font-family: Roboto, Arial, sans-serif;
+    line-height: 1.5;
+    color: #111b26;
+    background-color: #FFFFFF;
+}
+a {
+    color: #165ffb;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: Roboto, Arial, sans-serif;
+    color: #2d4056;
+}
+p {
+    color: #111b26;
+}
+code {
+    font-family: Menlo, Monaco, Consolas, “Courier New”, monospace;
+}
+pre {
+    font: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    color: #56728d;
+    background-color: #f8fbff;
+}
+ul {
+    color: #2d4056;
+}
+pre> code {
+    color: #2d4056;
+}
+
+.nav-pills>li.active>a {
+    background-color: #165ffb;
+    color: #ffffff;
+}
+.navbar-default, .label-default {
+    background-color: #2a62db;
+    border-style: none;
+}
+
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:hover {
+    background-color: #0bcd72;
+}
+
+.navbar-default .navbar-nav>li>a:hover, .navbar-default .navbar-nav>li>a:focus, .navbar-default .navbar-nav>li>a:active, .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:hover, .navbar-default .navbar-nav>.open>a:focus {
+    background-color: #082d7c;
+}
+
+.navbar-default .navbar-nav>.active>a:focus {
+    background-color: #0bcd72;
+}
+
+code > span.kw { font-weight: bold; }
+code > span.co { font-style: italic; }
+code > span.al, code > span.fu { font-style: bold; }
+
+code { color: #2d4056;}
+code > span.kw { color: #165ffb; } /* Keyword */
+code > span.dt { color: #5b728d; } /* DataType */
+code > span.dv { color: #f74b4b; } /* DecVal (decimal values) */
+code > span.bn { color: #049298; } /* BaseN */
+code > span.fl { color: #049298; } /* Float */
+code > span.ch { color: #049298; } /* Char */
+code > span.st { color: #049298; } /* String */
+code > span.co { color: #93a1a1; font-style: italic; } /* Comment */
+code > span.ot { color: #667b95; } /* OtherToken */
+code > span.fu { color: #6f40b2; } /* Function calls */

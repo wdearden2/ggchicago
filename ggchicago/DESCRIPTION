@@ -1,0 +1,28 @@
+Package: ggchicago
+Type: Package
+Title: ggplot2 Chicago themes and scales
+Version: 0.0.3
+Authors@R: c(
+    person("Will", "Dearden", email = "wdearden208@gmail.com", role = c("aut", "cre"))
+    )
+Maintainer: William Dearden <wdearden208@gmail.com>
+Description: This package contains ggplot2 Chicago themes and scales.
+License: GPL
+Encoding: UTF-8
+LazyData: true
+Depends:
+    ggplot2
+Imports:
+    grid,
+    png,
+    grDevices,
+    scales,
+    extrafont,
+    jsonlite
+RoxygenNote: 7.1.0
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat,
+    dplyr
+VignetteBuilder: knitr

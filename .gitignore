@@ -1,0 +1,11 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+.DS_Store
+ggchicago/inst/doc
+ggchicago/vignettes/gallery.html
+README.html
+ggchicago.Rcheck
+*.tar.gz
+ggchicago/docs

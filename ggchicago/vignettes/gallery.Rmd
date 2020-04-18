@@ -1,0 +1,211 @@
+---
+title: "Gallery of ggchicago Plots"
+author: "Will Dearden"
+date: "`r Sys.Date()`"
+output: 
+    rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Gallery of ggchicago examples}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r echo=FALSE}
+knitr::opts_chunk$set(fig.width=6, fig.height=4, out.width="672px", out.height="448px", dpi=300, message = FALSE) 
+```
+
+```{r message=FALSE, warning=FALSE}
+library(ggchicago)
+library(dplyr)
+```
+
+## Current Model Status and Performance (Dummy Data!)
+
+```{r model_status, warning=FALSE}
+
+set.seed(1)
+
+N <- 40
+
+df <- data.frame(
+    recall = runif(N)
+    , precision = runif(N)
+    , size = runif(N)
+    , color = as.logical(rbinom(N, size = 1, prob = 0.5))
+    , preprod = as.logical(rbinom(N, size = 1, prob = 0.2))
+)
+
+chicago_red <- get_colors("rusty-red")
+
+p <- ggplot(df, aes(x = recall, y = precision, fill = color, color = preprod, size = size)) +
+    geom_point(shape = 21, stroke = 1.5) +
+    scale_color_manual(values = c("FALSE" = alpha("black", 0), "TRUE" = unname(chicago_red))) +
+    scale_x_continuous(limits = c(0, 1)) +
+    scale_y_continuous(limits = c(0, 1)) +
+    coord_equal() +
+    labs(
+        title = "Model Performance"
+        , x = "Recall"
+        , y = "Precision"
+    )
+
+# Add F1 precision-recall curves
+
+createF1Curve <- function(F1) {
+    function(x) {
+        x*F1 / (2*x - F1)
+    }
+}
+
+F1Values <- 0.1*(1:9)
+
+F1Curves <- lapply(F1Values, createF1Curve)
+
+addF1Curve <- function(plot, fun) {
+    F1 <- environment(fun)$F1
+    xlim <- c(F1 / (2 - F1), 1)
+    plot + 
+        stat_function(fun = fun, color = get_colors("brand-cool-grey")
+                      , linetype = "dashed", xlim = xlim, n = 300)
+}
+
+p <- Reduce(
+    addF1Curve
+    , x = F1Curves
+    , init = p
+)
+
+F1Limits <- data.frame(F1 = F1Values, PrecisionEnd = createF1Curve(F1Values)(1))
+
+p <- p + 
+    geom_text(data = F1Limits
+              , mapping = aes(x = 1, y = PrecisionEnd, label = paste0("F1 = ", F1))
+              , inherit.aes = FALSE
+              , color = get_colors("brand-cool-grey")
+              , size = 3
+              , hjust = "right"
+              , vjust = 1.2)
+
+p +
+    theme_chicago() +
+    scale_fill_chicago()
+
+```
+
+# Design System Palette
+
+## Scatterplot with regression
+
+```{r}
+p <- ggplot(mpg, aes(displ, hwy, fill = drv, color = drv)) +
+    geom_point(pch = 21, color = 'black', size = 2) +
+    geom_smooth(se = FALSE, method = 'lm') +
+    scale_fill_chicago('base') +
+    scale_color_chicago('base') +
+    ggtitle("geom_smooth Example")
+p + theme_chicago()
+```
+
+## Stacked Histogram
+
+```{r}
+p <- diamonds %>%
+    dplyr::filter(
+        carat <= 3
+        , color %in% LETTERS[4:8]
+    ) %>%
+    ggplot(aes(x = carat, fill = color)) +
+    geom_histogram(bins = 30) +
+    scale_fill_chicago('base')
+
+p +
+    theme_chicago() +
+    labs(title = "Chicago theme"
+         , subtitle = "now with subtitles for ggplot2 >= 2.1.0")
+
+p +
+    theme_chicago("dark") +
+    labs(title = "Chicago Dark theme"
+         , subtitle = "now with subtitles for ggplot2 >= 2.1.0") 
+
+```
+
+## Continuous Palettes
+
+```{r}
+
+p <- ggplot(mtcars, aes(x = wt , y = mpg, color = disp)) +
+    geom_point(size = 4) +
+    theme_chicago()
+    
+p + scale_color_chicago('diverging', discrete = FALSE)
+
+p + scale_color_chicago('sequential', discrete = FALSE)
+
+```
+
+# Brand Palette
+
+## Scatterplot
+
+```{r}
+p <- ggplot(mtcars, aes(x = wt, y = mpg, colour = factor(gear))) +
+    geom_point() +
+    scale_color_chicago()
+
+p +
+    theme_chicago("black") +
+    ggtitle("Chicago Black theme")
+    
+
+p +
+    theme_chicago("light") +
+    ggtitle("Chicago Light theme")
+
+p +
+    theme_chicago("stark") +
+    labs(title = "Chicago Stark theme"
+         , subtitle = "For a high contrast minimalist look") 
+```
+
+# Event Bars
+
+## Design Palette
+
+```{r}
+events <- read.csv(
+    system.file('extdata', 'economic_events.csv', package = 'ggchicago')
+    , sep = '\t'
+    , stringsAsFactors = FALSE
+)
+events$start <- as.Date(events$start)
+events$end <- as.Date(events$end)
+
+ggplot(economics, aes(x = date, y = unemploy/pop)) +
+    geom_rect(
+        data = events
+        , mapping = aes(xmin = start, xmax = end, ymin = -Inf, ymax = Inf, fill = type)
+        , inherit.aes = FALSE
+    ) +
+    geom_line(color = 'white') +
+    theme_chicago(style = 'design') +
+    labs(x = 'Date', y = 'Rate', title = 'US Unemployment Rate', fill = 'Event Type') +
+    scale_fill_manual(values = unname(get_colors(c(
+        'design-light-blue', 'design-greyish-blue', 'design-red'
+    ))))
+```
+
+# Because We Can
+
+## Chicago geom
+
+Inspired by [ggtech](https://github.com/ricardo-bion/ggtech)
+
+```{r}
+ggplot(mtcars, aes(x = wt, y = mpg)) + 
+    geom_chicago(size = 0.04) +
+    theme_chicago() +
+    ggtitle("Chicago geom")
+```
+
+
