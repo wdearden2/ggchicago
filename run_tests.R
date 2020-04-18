@@ -1,4 +1,4 @@
-testStatus <- dshelperfuns::CheckTestThatResults(devtools::test('ggchicago'))
+testStatus <- dshelperfuns::CheckTestThatResults(devtools::test("ggchicago"))
 
 if (!testStatus) {
     print("Tests have failed!")

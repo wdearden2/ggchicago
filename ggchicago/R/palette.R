@@ -10,63 +10,65 @@
 #' @importFrom scales gradient_n_pal
 #' @examples
 #' scales::show_col(chicago_pal()(7))
-#' scales::show_col(chicago_pal('diverging')(7))
-#' scales::show_col(chicago_pal(discrete = FALSE)(0.1*0:10))
-#' scales::show_col(chicago_pal('diverging', discrete = FALSE)(0.1*0:10))
+#' scales::show_col(chicago_pal("diverging")(7))
+#' scales::show_col(chicago_pal(discrete = FALSE)(0.1 * 0:10))
+#' scales::show_col(chicago_pal("diverging", discrete = FALSE)(0.1 * 0:10))
 #' @export
 chicago_pal <- function(palette = "brand", discrete = TRUE) {
     if (discrete) {
         switch(
-            palette
-            , brand = function(n) {
+            palette,
+            brand = function(n) {
                 if (n <= 8) {
-                    colors <- get_palette('brand')
+                    colors <- get_palette("brand")
                     unname(colors[seq_len(n)])
                 } else {
                     ramped_palette <- c(
-                        "brand-purple", "ultra-blue", "brand-green"
-                        , "brand-yellow", "brand-brightorange", "brand-red"
+                        "brand-purple", "ultra-blue", "brand-green",
+                        "brand-yellow", "brand-brightorange", "brand-red"
                     )
-                    ramped_palette <- unname(get_palette('brand')[ramped_palette])
+                    ramped_palette <- unname(get_palette("brand")[ramped_palette])
                     grDevices::colorRampPalette(ramped_palette)(n)
                 }
-            }
-            , base = function(n) {
+            },
+            base = function(n) {
                 if (n <= 5) {
-                    color_names  <- c(
-                        "dusty-blue", "frosty-green", "clementine-orange"
-                        , "yolk-yellow", "rusty-red"
+                    color_names <- c(
+                        "dusty-blue", "frosty-green", "clementine-orange",
+                        "yolk-yellow", "rusty-red"
                     )
-                    colors <- get_palette('base')[color_names]
+                    colors <- get_palette("base")[color_names]
                     unname(colors[seq_len(n)])
                 } else {
-                    ramped_palette <- unname(get_palette('brand'))
+                    ramped_palette <- unname(get_palette("brand"))
                     grDevices::colorRampPalette(ramped_palette)(n)
                 }
-            }
-            , sequential = grDevices::colorRampPalette(get_palette('sequential'))
-            , diverging = grDevices::colorRampPalette(get_palette('diverging'))
-            , {
+            },
+            sequential = grDevices::colorRampPalette(get_palette("sequential")),
+            diverging = grDevices::colorRampPalette(get_palette("diverging")),
+            {
                 warning(paste0("Palette '", palette, "' does not exist. Defaulting to 'brand'"))
-                chicago_pal('brand', discrete = TRUE)
+                chicago_pal("brand", discrete = TRUE)
             }
         )
     } else {
         switch(
-            palette
-            , brand = function(x) {
+            palette,
+            brand = function(x) {
                 ramped_palette <-
-                    c("brand-purple", "ultra-blue", "brand-green"
-                    , "brand-yellow", "brand-brightorange", "brand-red")
-                ramped_palette <- unname(get_palette('brand')[ramped_palette])
+                    c(
+                        "brand-purple", "ultra-blue", "brand-green",
+                        "brand-yellow", "brand-brightorange", "brand-red"
+                    )
+                ramped_palette <- unname(get_palette("brand")[ramped_palette])
                 scales::gradient_n_pal(ramped_palette)(x)
-            }
-            , base = scales::gradient_n_pal(get_palette('base'))
-            , sequential = scales::gradient_n_pal(get_palette('sequential'))
-            , diverging = scales::gradient_n_pal(get_palette('diverging'))
-            , {
+            },
+            base = scales::gradient_n_pal(get_palette("base")),
+            sequential = scales::gradient_n_pal(get_palette("sequential")),
+            diverging = scales::gradient_n_pal(get_palette("diverging")),
+            {
                 warning(paste0("Palette '", palette, "' does not exist. Defaulting to 'sequential'"))
-                chicago_pal('sequential', discrete = FALSE)
+                chicago_pal("sequential", discrete = FALSE)
             }
         )
     }
@@ -83,15 +85,15 @@ chicago_pal <- function(palette = "brand", discrete = TRUE) {
 #' @rdname scale_chicago
 #' @seealso \code{\link{theme_chicago}} for examples.
 #' @export
-scale_color_chicago <- function(palette = 'brand', discrete = TRUE, ...) {
+scale_color_chicago <- function(palette = "brand", discrete = TRUE, ...) {
     if (discrete) {
         discrete_scale("colour", "chicago", chicago_pal(palette, discrete = TRUE), ...)
     } else {
         continuous_scale(
-            "colour", "chicago"
-            , chicago_pal(palette, discrete = FALSE)
-            , guide = "colourbar"
-            , ...
+            "colour", "chicago",
+            chicago_pal(palette, discrete = FALSE),
+            guide = "colourbar",
+            ...
         )
     }
 }
@@ -102,15 +104,15 @@ scale_colour_chicago <- scale_color_chicago
 
 #' @rdname scale_chicago
 #' @export
-scale_fill_chicago <- function(palette = 'brand', discrete = TRUE, ...) {
+scale_fill_chicago <- function(palette = "brand", discrete = TRUE, ...) {
     if (discrete) {
         discrete_scale("fill", "chicago", chicago_pal(palette, discrete = TRUE), ...)
     } else {
         continuous_scale(
-            "fill", "chicago"
-            , chicago_pal(palette, discrete = FALSE)
-            , guide = "colourbar"
-            , ...
+            "fill", "chicago",
+            chicago_pal(palette, discrete = FALSE),
+            guide = "colourbar",
+            ...
         )
     }
 }

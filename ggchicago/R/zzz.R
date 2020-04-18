@@ -3,8 +3,8 @@
     suppressMessages(
         suppressWarnings({
             extrafont::font_import(
-                file.path(system.file(package = 'ggchicago'), 'fonts')
-                , prompt = FALSE
+                file.path(system.file(package = "ggchicago"), "fonts"),
+                prompt = FALSE
             )
         })
     )
